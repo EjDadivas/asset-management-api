@@ -31,3 +31,20 @@ LOGIN
 "email": "adminuser@example.com",
 "password": "adminPassword"
 }
+
+ASSET
+{
+"name": "Laptop",
+"description": "MacBook Pro",
+"availability": true
+},
+{
+"name": "Projector",
+"description": "Epson PowerLite",
+"availability": false
+},
+{
+"name": "Camera",
+"description": "Canon EOS",
+"availability": true
+}
