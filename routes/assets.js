@@ -5,6 +5,8 @@ const {
   getAllAssets,
   getAsset,
   createAsset,
+  updateAsset,
+  deleteAsset,
 } = require("../controllers/assetsController");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth");
@@ -12,16 +14,23 @@ const isAdminMiddleware = require("../middlewares/isAdmin");
 
 router.use(authMiddleware);
 
-// ADMIN
-router.get("/admin", isAdminMiddleware, getAllAssets);
-router.get("/admin/:id", isAdminMiddleware, getAsset);
-router.post("/admin", isAdminMiddleware, createAsset);
-// router.patch("/admin/:id", isAdminMiddleware, updateAsset);
-// router.delete("/admin/:id", isAdminMiddleware,  deleteAsset);
+// Group admin routes
+const adminRoutes = express.Router();
+adminRoutes.use(isAdminMiddleware);
 
-//USER
+adminRoutes.get("/", getAllAssets);
+adminRoutes.get("/:id", getAsset);
+adminRoutes.post("/", createAsset);
+adminRoutes.patch("/:id", updateAsset);
+adminRoutes.delete("/:id", deleteAsset);
 
-router.get("/", getAvailableAssets);
-router.get("/:id", getAvailableAsset);
+// Group user routes
+const userRoutes = express.Router();
+userRoutes.get("/", getAvailableAssets);
+userRoutes.get("/:id", getAvailableAsset);
+
+// Define paths for admin and user route groups
+router.use("/admin", adminRoutes);
+router.use("/", userRoutes);
 
 module.exports = router;

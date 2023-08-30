@@ -1,12 +1,43 @@
 const Asset = require("../models/asset");
 
 // USER
-// TODO: User Assets[all, specific, query params]
-const getAvailableAssets = (req, res) => {
-  res.status(200).json({ msg: "user: get all assets" });
+const getAvailableAssets = async (req, res) => {
+  try {
+    const { name, description } = req.query;
+    console.log(name, description);
+
+    // Build the filter object to be used in the query
+    const filter = { availability: true };
+
+    // Add name and/or description to the filter if provided
+    if (name) {
+      filter.name = name;
+    }
+    if (description) {
+      filter.description = description;
+    }
+    const assets = await Asset.find(filter);
+    res.status(200).json(assets);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
-const getAvailableAsset = (req, res) => {
-  res.status(200).json({ msg: "user: get single asset" });
+const getAvailableAsset = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const asset = await Asset.findById(id);
+
+    if (!asset) {
+      return res.status(404).json({ error: "Asset not found" });
+    }
+    if (!asset.availability) {
+      res.status(400).json({ error: "Asset not available" });
+    }
+
+    res.status(200).json(asset);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 // ADMIN
@@ -14,6 +45,7 @@ const getAvailableAsset = (req, res) => {
 const getAllAssets = async (req, res) => {
   try {
     const assets = await Asset.find();
+
     res.status(200).json(assets);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -24,6 +56,9 @@ const getAsset = async (req, res) => {
   try {
     const { id } = req.params;
     const asset = await Asset.findById(id);
+    if (!asset) {
+      return res.status(404).json({ error: "Asset not found" });
+    }
     res.status(200).json(asset);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -47,10 +82,33 @@ const createAsset = async (req, res) => {
   }
 };
 
+const updateAsset = async (req, res) => {
+  const { id } = req.params;
+  const asset = await Asset.findById(id);
+  if (!asset) {
+    return res.status(404).json({ error: "Asset not found" });
+  }
+
+  const updated = await asset.updateOne({ ...req.body });
+  res.status(200).json(updated);
+};
+const deleteAsset = async (req, res) => {
+  const { id } = req.params;
+  const asset = await Asset.findById(id);
+  if (!asset) {
+    return res.status(404).json({ error: "Asset not found" });
+  }
+  const deleted = await asset.deleteOne();
+  //   console.log(deleted);
+  res.status(200).json(deleted);
+  //   res.status(204).end();
+};
 module.exports = {
   getAvailableAssets,
   getAvailableAsset,
   getAllAssets,
   getAsset,
   createAsset,
+  updateAsset,
+  deleteAsset,
 };
