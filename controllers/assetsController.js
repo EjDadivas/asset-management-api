@@ -4,9 +4,9 @@ const Asset = require("../models/asset");
 const getAvailableAssets = async (req, res) => {
   try {
     const { name, description } = req.query;
-    console.log(name, description);
 
     // Build the filter object to be used in the query
+    // Added default filter for availablity
     const filter = { availability: true };
 
     // Add name and/or description to the filter if provided
@@ -44,7 +44,19 @@ const getAvailableAsset = async (req, res) => {
 
 const getAllAssets = async (req, res) => {
   try {
-    const assets = await Asset.find();
+    const { name, description, availability } = req.query;
+
+    const filter = {};
+    if (name) {
+      filter.name = name;
+    }
+    if (description) {
+      filter.description = description;
+    }
+    if (availability) {
+      filter.availability = availability;
+    }
+    const assets = await Asset.find(filter);
 
     res.status(200).json(assets);
   } catch (error) {
