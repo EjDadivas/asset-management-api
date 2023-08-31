@@ -48,6 +48,7 @@ const getAvailableAssets = async (req, res) => {
       filter.description = description;
     }
     const assets = await Asset.find(filter);
+
     res.status(200).json(assets);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -137,7 +138,7 @@ const getUserTransactions = async (req, res) => {
       .populate("userId", "username")
       .populate("assetId");
 
-    if (transactions.length == 0) {
+    if (!transactions.length) {
       return res.status(404).json({ error: "No Transactions" });
     }
     res.status(200).json(transactions);
