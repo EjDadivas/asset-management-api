@@ -15,9 +15,9 @@ router.use(authMiddleware);
 
 router.get("/me", getUserProfile);
 router.patch("/me", updateUserProfile);
-router.get("/asset", getAvailableAssets);
-router.get("/asset/:id", getAvailableAsset);
+router.get("/assets", getAvailableAssets);
+router.get("/assets/:id", getAvailableAsset);
 router.post("/borrow", createTransaction);
 router.get("/borrow", getUserTransactions);
-router.patch("/return/:id", returnAsset);
+router.post("/return", returnAsset);
 module.exports = router;
