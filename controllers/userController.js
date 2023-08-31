@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Asset = require("../models/asset");
+const Transaction = require("../models/transaction");
 
 // get specific user
 const getUserProfile = async (req, res) => {
@@ -70,15 +71,84 @@ const getAvailableAsset = async (req, res) => {
   }
 };
 
+const createTransaction = async (req, res) => {
+  try {
+    const { assetId, dueAt } = req.body;
+    const userId = req.user._id;
+    const asset = Asset.findById(assetId);
+
+    if (!asset) {
+      return res.status(404).json({ error: "Asset not found" });
+    }
+    if (!asset.availability) {
+      res.status(400).json({ error: "Asset not available" });
+    }
+    const updatedAsset = await asset.updateOne({ availability: false });
+    console.log(updatedAsset);
+
+    const transaction = new Transaction({
+      userId,
+      assetId,
+      dueAt,
+    });
+
+    await transaction.save();
+    res.status(201).json(transaction);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getUserTransactions = async (req, res) => {
-  // TODO: get all transactions of user
-  res.status(200).json({ msg: "List of all Borrow Transactions" });
+  try {
+    const userId = req.user._id;
+    const assets = await Transaction.find({ user: userId })
+      .populate("user", "username")
+      .populate("asset", "name");
+
+    res.status(200).json(assets);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const returnAsset = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const transaction = await Transaction.findById(id);
+    if (!transaction) {
+      return res.status(404).json({ error: "Transaction not found" });
+    }
+    if (transaction.user !== userId) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    const updatedTransaction = transaction.updateOne({ returnedAt: Date.now });
+    //updating asset
+    const asset = await Asset.findById(transaction.assetId);
+
+    if (!asset) {
+      return res.status(404).json({ error: "Asset not found" });
+    }
+    if (!asset.availability) {
+      res.status(400).json({ error: "Asset not available" });
+    }
+    const updatedAsset = await asset.updateOne({ availability: true });
+    console.log(updatedAsset);
+
+    res.status(200).json(updatedTransaction);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 module.exports = {
-  getUser,
-  updateUser,
-  getUserTransactions,
+  getUserProfile,
+  updateUserProfile,
   getAvailableAssets,
   getAvailableAsset,
+  createTransaction,
+  getUserTransactions,
+  returnAsset,
 };

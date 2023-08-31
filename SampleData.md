@@ -48,3 +48,25 @@ ASSET
 "description": "Canon EOS",
 "availability": true
 }
+
+Transaction:
+
+"user": "user_id_here",  
+"asset": "asset_id_here",  
+"dueAt": "2023-09-15T00:00:00Z"
+
+{
+"user": "user_id_here",
+"asset": "asset_id_here",
+"dueAt": "2023-09-20T00:00:00Z"
+}
+{
+"user": "user_id_here",
+"asset": "asset_id_here",
+"dueAt": "2023-09-25T00:00:00Z"
+}
+{
+"user": "user_id_here",
+"asset": "asset_id_here",
+"dueAt": "2023-09-30T00:00:00Z"
+}
