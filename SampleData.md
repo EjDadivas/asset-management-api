@@ -50,23 +50,21 @@ ASSET
 }
 
 Transaction:
-
-"user": "user_id_here",  
+{
 "asset": "asset_id_here",  
 "dueAt": "2023-09-15T00:00:00Z"
-
+}
 {
-"user": "user_id_here",
 "asset": "asset_id_here",
 "dueAt": "2023-09-20T00:00:00Z"
 }
+
+//OverDue Transaction Dates:
 {
-"user": "user_id_here",
 "asset": "asset_id_here",
-"dueAt": "2023-09-25T00:00:00Z"
+"dueAt": "2023-05-25T00:00:00Z"
 }
 {
-"user": "user_id_here",
 "asset": "asset_id_here",
-"dueAt": "2023-09-30T00:00:00Z"
+"dueAt": "2023-07-30T00:00:00Z"
 }
