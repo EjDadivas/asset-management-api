@@ -23,8 +23,9 @@ User Type: Admin
     ADMIN
     | Endpoint              | HTTP Method | Description                                               |
     |-----------------------|-------------|-----------------------------------------------------------|
-    | /api/admin/assets     | GET         | Retrieve a list of all assets.(includes filtering)
-    | /api/admin/assets/:id | GET         | Get details of a specific asset by its ID.                |
+    | /api/admin/assets     | GET         | Retrieve a list of all assets.(includes filtering)        |
+    | /api/admin/assets/:id | GET         | Retrieve a list of all assets.(includes filtering)        |
+    | /api/admin/assets/    | POST        | Creating a new asset                                      |
     | /api/admin/assets/:id | PATCH       | Update details of a specific asset by its ID.             |
     | /api/admin/assets/:id | DELETE      | Delete a specific asset by its ID.                        |
     | /api/admin/borrow     | GET         | Retrieve a list of all borrowed assets  (//TODO: includes query params)
