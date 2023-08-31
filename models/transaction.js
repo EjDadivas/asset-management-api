@@ -23,6 +23,11 @@ const transactionSchema = new mongoose.Schema(
     },
     returnedAt: {
       type: Date,
+      default: null,
+    },
+    status: {
+      type: String,
+      default: "borrow",
     },
   },
   { timestamps: true }
