@@ -9,6 +9,8 @@ const getAllAssets = async (req, res) => {
       filter.name = name;
     }
     if (description) {
+      //TODO: trim white space, convert to lower case
+
       filter.description = description;
     }
     if (availability) {

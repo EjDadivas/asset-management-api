@@ -23,9 +23,6 @@ mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    connectTimeoutMS: 10000,
-    socketTimeoutMS: 45000, // Adjust the socket timeout as needed
-    keepAlive: true, // Enable keep-alive
   })
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("MongoDB connection error:", error));

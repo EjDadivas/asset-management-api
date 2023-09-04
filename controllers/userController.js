@@ -45,7 +45,8 @@ const getAvailableAssets = async (req, res) => {
       filter.name = name;
     }
     if (description) {
-      filter.description = description;
+      //TODO: trim white space, convert to lower case
+      filter.description.trim = description;
     }
     const assets = await Asset.find(filter);
 
